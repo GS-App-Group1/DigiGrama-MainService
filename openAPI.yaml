@@ -1,0 +1,51 @@
+openapi: "3.0.0"
+info:
+  title: MainAPI
+  version: 1.0.0
+paths:
+  /getUserRequests/:
+    get:
+      summary: Get the userRequets given to the system
+      description: Get the userRequets given to the system
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    _id:
+                      type: string
+                    nic:
+                      type: integer
+                    name:
+                      type: string
+                    requestTime:
+                      type: dateTime
+                    isApproved:
+                      type: boolean
+
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                  description:
+                    type: string
+
+        "500":
+          description: Internal Server Error
+          content:
+            text/plain:
+              schema:
+                type: string
+
+      deprecated: false
+      security: []
