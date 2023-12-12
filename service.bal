@@ -50,4 +50,13 @@ service /main on new http:Listener(9090) {
             _ = check self.databaseClient->update(userRequest, collection, database, {nic: nic});
         }
     }
+
+    resource function get liveness() returns http:Ok {
+        return http:OK;
+    }
+
+    resource function get readiness() returns http:Ok|error {
+        int _ = check self.databaseClient->countDocuments(collection, database);
+        return http:OK;
+    }
 }

@@ -24,4 +24,4 @@ path="/main/liveness"
 
 [cloud.deployment.probes.readiness]
 port=9090
-path="/address/readiness"
+path="/main/readiness"
