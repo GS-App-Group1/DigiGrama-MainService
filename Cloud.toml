@@ -20,7 +20,7 @@ memory=80
 
 [cloud.deployment.probes.liveness]
 port=9090
-path="/address/liveness"
+path="/main/liveness"
 
 [cloud.deployment.probes.readiness]
 port=9090
