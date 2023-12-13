@@ -7,6 +7,13 @@ paths:
     get:
       summary: Get the userRequets given to the system
       description: Get the userRequets given to the system
+      parameters:
+        - in: query
+          name: gsDivision
+          description: GS Division of the user in the record
+          required: true
+          schema:
+            type: string
       responses:
         "200":
           description: OK
@@ -24,7 +31,7 @@ paths:
                     name:
                       type: string
                     requestTime:
-                      type: dateTime
+                      type: string
                     isApproved:
                       type: boolean
 
@@ -50,58 +57,58 @@ paths:
       deprecated: false
       security: []
 
-/userRequest/:
-  post:
-    summary: Post the userRequet given to the system
-    description: Post the userRequet given to the system
-    requestBody:
-      required: true
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              _id:
-                type: string
-              nic:
-                type: integer
-              name:
-                type: string
-              requestTime:
-                type: string
-              isApproved:
-                type: boolean
-    responses:
-      "200":
-        description: OK
+  /userRequest/:
+    post:
+      summary: Post the userRequet given to the system
+      description: Post the userRequet given to the system
+      requestBody:
+        required: true
         content:
           application/json:
             schema:
               type: object
               properties:
-                status:
+                _id:
                   type: string
-                description:
+                nic:
+                  type: integer
+                name:
                   type: string
+                requestTime:
+                  type: string
+                isApproved:
+                  type: boolean
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                  description:
+                    type: string
 
-      "404":
-        description: Not found
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                status:
-                  type: string
-                description:
-                  type: string
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                  description:
+                    type: string
 
-      "500":
-        description: Internal Server Error
-        content:
-          text/plain:
-            schema:
-              type: string
+        "500":
+          description: Internal Server Error
+          content:
+            text/plain:
+              schema:
+                type: string
 
-    deprecated: false
-    security: []
+      deprecated: false
+      security: []

@@ -5,6 +5,7 @@ type UserRequest record {|
     string _id;
     string nic;
     string name;
+    string gsDivision;
     string requestTime;
     boolean isApproved;
 |};
@@ -28,8 +29,8 @@ service /main on new http:Listener(9090) {
         _ = check self.databaseClient->insert(userRequest, collection, database);
     }
 
-    resource function get getUserRequests() returns UserRequest[]|error? {
-        stream<UserRequest, error?>|mongodb:Error UserRequestStream = check self.databaseClient->find(collection, database);
+    resource function get getUserRequests(string gsDivision) returns UserRequest[]|error? {
+        stream<UserRequest, error?>|mongodb:Error UserRequestStream = check self.databaseClient->find(collection, database, {gsDivision: gsDivision});
         return from UserRequest userRequest in check UserRequestStream
             select userRequest;
     }
