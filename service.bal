@@ -33,10 +33,20 @@ service /main on new http:Listener(9090) {
         _ = check self.databaseClient->insert(userRequest, collection, database);
     }
 
-    resource function get getUserRequests(string gsDivision) returns UserRequest[]|error? {
+    resource function get getUserRequests(string gsDivision) returns json|error? {
         stream<UserRequest, error?>|mongodb:Error UserRequestStream = check self.databaseClient->find(collection, database, {gsDivision: gsDivision});
-        return from UserRequest userRequest in check UserRequestStream
+        UserRequest[]|error userRequests = from UserRequest userRequest in check UserRequestStream
             select userRequest;
+
+        return (check userRequests).toJson();
+    }
+
+    resource function get getUserRequestForNIC(string nic) returns json|error? {
+        stream<UserRequest, error?>|mongodb:Error UserRequestStream = check self.databaseClient->find(collection, database, {nic: nic});
+        UserRequest[]|error userRequests = from UserRequest userRequest in check UserRequestStream
+            select userRequest;
+
+        return (check userRequests).toJson();
     }
 
     resource function put updateRequestStatus(string nic, string status) returns error? {
