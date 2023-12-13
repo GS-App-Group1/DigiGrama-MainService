@@ -43,7 +43,7 @@ service /main on new http:Listener(9090) {
         if (userRequests is UserRequest[]) {
             UserRequest userRequest = userRequests[0];
             userRequest.isApproved = true;
-            _ = check self.databaseClient->update(userRequest, collection, database, {nic: nic});
+            _ = check self.databaseClient->update({"$set": userRequest}, collection, database, {nic: nic});
         }
     }
 
