@@ -35,14 +35,14 @@ service /main on new http:Listener(9090) {
             select userRequest;
     }
 
-    resource function put updateRequestStatus(string nic) returns error? {
+    resource function put updateRequestStatus(string nic, string status) returns error? {
         stream<UserRequest, error?>|mongodb:Error UserRequestStream = check self.databaseClient->find(collection, database, {nic: nic});
         UserRequest[]|error userRequests = from UserRequest userRequest in check UserRequestStream
             select userRequest;
 
         if (userRequests is UserRequest[]) {
             UserRequest userRequest = userRequests[0];
-            userRequest.status = "Approved";
+            userRequest.status = status;
             _ = check self.databaseClient->update({"$set": userRequest}, collection, database, {nic: nic});
         }
     }

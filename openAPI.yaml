@@ -66,6 +66,11 @@ paths:
           required: true
           schema:
             type: string
+        - name: status
+          in: query
+          required: true
+          schema:
+            type: string
       responses:
         "202":
           description: Accepted
@@ -118,6 +123,7 @@ components:
         status:
           type: integer
           description: Relevant HTTP status code
+          format: int32
     UserRequest:
       required:
         - _id
