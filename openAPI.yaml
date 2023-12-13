@@ -127,9 +127,13 @@ components:
     UserRequest:
       required:
         - _id
+        - address
+        - civilStatus
         - gsDivision
-        - name
+        - gsNote
         - nic
+        - presentOccupation
+        - reason
         - requestTime
         - status
       type: object
@@ -138,7 +142,15 @@ components:
           type: string
         nic:
           type: string
-        name:
+        address:
+          type: string
+        civilStatus:
+          type: string
+        presentOccupation:
+          type: string
+        reason:
+          type: string
+        gsNote:
           type: string
         gsDivision:
           type: string

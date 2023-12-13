@@ -4,7 +4,11 @@ import ballerinax/mongodb;
 type UserRequest record {|
     string _id;
     string nic;
-    string name;
+    string address;
+    string civilStatus;
+    string presentOccupation;
+    string reason;
+    string gsNote;
     string gsDivision;
     string requestTime;
     string status;
