@@ -34,7 +34,7 @@ service /main on new http:Listener(9090) {
             select userRequest;
     }
 
-    resource function put updateRequestStatus(int nic) returns error? {
+    resource function put updateRequestStatus(string nic) returns error? {
         stream<UserRequest, error?>|mongodb:Error UserRequestStream = check self.databaseClient->find(collection, database, {nic: nic});
         UserRequest[]|error userRequests = from UserRequest userRequest in check UserRequestStream
             select userRequest;
