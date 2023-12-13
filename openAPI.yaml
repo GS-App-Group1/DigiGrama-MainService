@@ -55,6 +55,7 @@ paths:
     summary: Post the userRequet given to the system
     description: Post the userRequet given to the system
     requestBody:
+      required: true
       content:
         application/json:
           schema:

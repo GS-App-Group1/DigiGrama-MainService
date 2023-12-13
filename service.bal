@@ -15,11 +15,6 @@ configurable string password = ?;
 configurable string database = ?;
 configurable string collection = ?;
 
-# Configurable SMS service configurations
-// configurable string api_key = ?;
-// configurable string api_secret = ?;
-// configurable string vonageServiceUrl = "https://rest.nexmo.com/sms";
-
 # A service representing a network-accessible API
 # bound to port `9090`.
 service /main on new http:Listener(9090) {
