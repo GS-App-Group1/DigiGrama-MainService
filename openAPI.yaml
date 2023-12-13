@@ -118,15 +118,14 @@ components:
         status:
           type: integer
           description: Relevant HTTP status code
-          format: int32
     UserRequest:
       required:
         - _id
         - gsDivision
-        - isApproved
         - name
         - nic
         - requestTime
+        - status
       type: object
       properties:
         _id:
@@ -139,5 +138,5 @@ components:
           type: string
         requestTime:
           type: string
-        isApproved:
-          type: boolean
+        status:
+          type: string

@@ -7,7 +7,7 @@ type UserRequest record {|
     string name;
     string gsDivision;
     string requestTime;
-    boolean isApproved;
+    string status;
 |};
 
 # Configurations for the MongoDB endpoint
@@ -42,7 +42,7 @@ service /main on new http:Listener(9090) {
 
         if (userRequests is UserRequest[]) {
             UserRequest userRequest = userRequests[0];
-            userRequest.isApproved = true;
+            userRequest.status = "Approved";
             _ = check self.databaseClient->update({"$set": userRequest}, collection, database, {nic: nic});
         }
     }
