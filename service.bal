@@ -62,7 +62,7 @@ service /main on new http:Listener(9090) {
         }
     }
 
-    resource function put updateUserRequest(string nic, string email, string address, string civil_status, string presentOccupation) returns error? {
+    resource function put updateUserRequest(string nic, string email, string address, string civil_status, string presentOccupation, string reason) returns error? {
         stream<UserRequest, error?>|mongodb:Error UserRequestStream = check self.databaseClient->find(collection, database, {nic: nic, email: email, status: "pending"});
         UserRequest[]|error userRequests = from UserRequest userRequest in check UserRequestStream
             select userRequest;
@@ -73,6 +73,7 @@ service /main on new http:Listener(9090) {
             userRequest.address = address;
             userRequest.civilStatus = civil_status;
             userRequest.presentOccupation = presentOccupation;
+            userRequest.reason = reason;
             _ = check self.databaseClient->update({"$set": userRequest}, collection, database, {nic: nic, email: email, status: "pending"});
         }
     }
