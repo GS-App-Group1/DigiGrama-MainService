@@ -64,6 +64,11 @@ paths:
           required: true
           schema:
             type: string
+        - name: email
+          in: query
+          required: true
+          schema:
+            type: string
       responses:
         "200":
           description: Ok
@@ -90,7 +95,52 @@ paths:
           required: true
           schema:
             type: string
+        - name: email
+          in: query
+          required: true
+          schema:
+            type: string
         - name: status
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        "202":
+          description: Accepted
+        "400":
+          description: BadRequest
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorPayload"
+  /updateUserRequest:
+    put:
+      operationId: putUpdateuserrequest
+      parameters:
+        - name: nic
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: email
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: address
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: civil_status
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: presentOccupation
           in: query
           required: true
           schema:
@@ -153,6 +203,7 @@ components:
         - _id
         - address
         - civilStatus
+        - email
         - gsDivision
         - gsNote
         - nic
@@ -165,6 +216,8 @@ components:
         _id:
           type: string
         nic:
+          type: string
+        email:
           type: string
         address:
           type: string

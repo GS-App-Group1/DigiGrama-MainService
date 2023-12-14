@@ -4,6 +4,7 @@ import ballerinax/mongodb;
 type UserRequest record {|
     string _id;
     string nic;
+    string email;
     string address;
     string civilStatus;
     string presentOccupation;
@@ -41,23 +42,38 @@ service /main on new http:Listener(9090) {
         return (check userRequests).toJson();
     }
 
-    resource function get getUserRequestForNIC(string nic) returns json|error? {
-        stream<UserRequest, error?>|mongodb:Error UserRequestStream = check self.databaseClient->find(collection, database, {nic: nic});
+    resource function get getUserRequestForNIC(string nic, string email) returns json|error? {
+        stream<UserRequest, error?>|mongodb:Error UserRequestStream = check self.databaseClient->find(collection, database, {nic: nic, email: email});
         UserRequest[]|error userRequests = from UserRequest userRequest in check UserRequestStream
             select userRequest;
 
         return (check userRequests).toJson();
     }
 
-    resource function put updateRequestStatus(string nic, string status) returns error? {
-        stream<UserRequest, error?>|mongodb:Error UserRequestStream = check self.databaseClient->find(collection, database, {nic: nic});
+    resource function put updateRequestStatus(string nic, string email, string status) returns error? {
+        stream<UserRequest, error?>|mongodb:Error UserRequestStream = check self.databaseClient->find(collection, database, {nic: nic, email: email});
         UserRequest[]|error userRequests = from UserRequest userRequest in check UserRequestStream
             select userRequest;
 
         if (userRequests is UserRequest[]) {
             UserRequest userRequest = userRequests[0];
             userRequest.status = status;
-            _ = check self.databaseClient->update({"$set": userRequest}, collection, database, {nic: nic});
+            _ = check self.databaseClient->update({"$set": userRequest}, collection, database, {nic: nic, email: email});
+        }
+    }
+
+    resource function put updateUserRequest(string nic, string email, string address, string civil_status, string presentOccupation) returns error? {
+        stream<UserRequest, error?>|mongodb:Error UserRequestStream = check self.databaseClient->find(collection, database, {nic: nic, email: email, status: "pending"});
+        UserRequest[]|error userRequests = from UserRequest userRequest in check UserRequestStream
+            select userRequest;
+
+        if (userRequests is UserRequest[]) {
+            UserRequest userRequest = userRequests[0];
+            userRequest.nic = nic;
+            userRequest.address = address;
+            userRequest.civilStatus = civil_status;
+            userRequest.presentOccupation = presentOccupation;
+            _ = check self.databaseClient->update({"$set": userRequest}, collection, database, {nic: nic, email: email, status: "pending"});
         }
     }
 
