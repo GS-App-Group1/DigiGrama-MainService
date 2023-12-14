@@ -145,6 +145,11 @@ paths:
           required: true
           schema:
             type: string
+        - name: reason
+          in: query
+          required: true
+          schema:
+            type: string
       responses:
         "202":
           description: Accepted
