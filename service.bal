@@ -78,22 +78,6 @@ service /main on new http:Listener(9090) {
         }
     }
 
-    resource function get getIdentityFromNIC(string nic) returns json|error? {
-        return getIdentityByNIC(nic);
-    }
-
-    resource function get getPoliceRecordFromNIC(string NIC) returns json|error? {
-        return getPoliceRecordFromNIC(NIC);
-    }
-
-    resource function get getGSDivisionFromNIC(string gsDivision) returns json|error? {
-        return getGSDivisionFromNIC(gsDivision);
-    }
-
-    resource function get getAddressByNIC(string nic) returns json|error? {
-        return getAddressByNIC(nic);
-    }
-
     resource function get liveness() returns http:Ok {
         return http:OK;
     }
