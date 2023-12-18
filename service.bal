@@ -43,7 +43,7 @@ service /main on new http:Listener(9090) {
     }
 
     resource function get getUserRequestForNIC(string nic, string email) returns json|error? {
-        stream<UserRequest, error?>|mongodb:Error UserRequestStream = check self.databaseClient->find(collection, database, {nic: nic, email: email});
+        stream<UserRequest, error?>|mongodb:Error UserRequestStream = check self.databaseClient->find(collection, database, {nic: nic, email: email}, {}, {requestTime: -1}, 1);
         UserRequest[]|error userRequests = from UserRequest userRequest in check UserRequestStream
             select userRequest;
 
