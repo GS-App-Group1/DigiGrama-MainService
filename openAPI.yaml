@@ -161,6 +161,36 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ErrorPayload"
+  /updateGSRequest:
+    put:
+      operationId: putUpdategsrequest
+      parameters:
+        - name: nic
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: email
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: gsNote
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        "202":
+          description: Accepted
+        "400":
+          description: BadRequest
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorPayload"
   /liveness:
     get:
       operationId: getLiveness

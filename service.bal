@@ -78,6 +78,18 @@ service /main on new http:Listener(9090) {
         }
     }
 
+    resource function put updateGSRequest(string nic, string email, string gsNote) returns error? {
+        stream<UserRequest, error?>|mongodb:Error UserRequestStream = check self.databaseClient->find(collection, database, {nic: nic, email: email, status: "pending"});
+        UserRequest[]|error userRequests = from UserRequest userRequest in check UserRequestStream
+            select userRequest;
+
+        if (userRequests is UserRequest[]) {
+            UserRequest userRequest = userRequests[0];
+            userRequest.gsNote = gsNote;
+            _ = check self.databaseClient->update({"$set": userRequest}, collection, database, {nic: nic, email: email, status: "pending"});
+        }
+    }
+
     resource function get liveness() returns http:Ok {
         return http:OK;
     }
