@@ -83,7 +83,7 @@ service /main on new http:Listener(9090) {
         UserRequest[]|error userRequests = from UserRequest userRequest in check UserRequestStream
             select userRequest;
 
-        if (userRequests is UserRequest[]) {
+        if (userRequests is UserRequest[] && userRequests.length() > 0) {
             UserRequest userRequest = userRequests[0];
             userRequest.gsNote = gsNote;
             _ = check self.databaseClient->update({"$set": userRequest}, collection, database, {nic: nic, email: email, status: "pending"});
