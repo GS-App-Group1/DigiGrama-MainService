@@ -30,12 +30,21 @@ service /main on new http:Listener(9090) {
         self.databaseClient = check new ({connection: {url: string `mongodb+srv://${username}:${password}@digigrama.pgauwpq.mongodb.net/`}});
     }
 
-    resource function post userRequest(UserRequest userRequest) returns error? {
+    resource function post userRequest(@http:Payload json payload) returns error? {
+        UserRequest userRequest = check payload.cloneWithType(UserRequest);
         _ = check self.databaseClient->insert(userRequest, collection, database);
     }
 
     resource function get getUserRequests(string gsDivision) returns json|error? {
         stream<UserRequest, error?>|mongodb:Error UserRequestStream = check self.databaseClient->find(collection, database, {gsDivision: gsDivision});
+        UserRequest[]|error userRequests = from UserRequest userRequest in check UserRequestStream
+            select userRequest;
+
+        return (check userRequests).toJson();
+    }
+
+    resource function get getUserRequestByID(string id) returns json|error? {
+        stream<UserRequest, error?>|mongodb:Error UserRequestStream = check self.databaseClient->find(collection, database, {_id: id});
         UserRequest[]|error userRequests = from UserRequest userRequest in check UserRequestStream
             select userRequest;
 
@@ -83,7 +92,7 @@ service /main on new http:Listener(9090) {
         UserRequest[]|error userRequests = from UserRequest userRequest in check UserRequestStream
             select userRequest;
 
-        if (userRequests is UserRequest[] && userRequests.length() > 0) {
+        if (userRequests is UserRequest[]) {
             UserRequest userRequest = userRequests[0];
             userRequest.gsNote = gsNote;
             _ = check self.databaseClient->update({"$set": userRequest}, collection, database, {nic: nic, email: email, status: "pending"});
