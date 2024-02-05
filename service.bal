@@ -67,7 +67,7 @@ service /main on new http:Listener(9090) {
         _ = check validateNIC(nic);
         _ = check validateEmail(email);
         _ = check validateStatus(status);
-        stream<UserRequest, error?>|mongodb:Error UserRequestStream = check self.databaseClient->find(collection, database, {nic: nic, email: email});
+        stream<UserRequest, error?>|mongodb:Error UserRequestStream = check self.databaseClient->find(collection, database, {nic: nic, email: email, status: "pending"});
         UserRequest[]|error userRequests = from UserRequest userRequest in check UserRequestStream
             select userRequest;
 
