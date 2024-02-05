@@ -41,7 +41,7 @@ isolated function validateStatus(string status) returns error? {
         return error("Status cannot be empty");
     }
 
-    if (status != "approved" && status != "rejected") {
+    if (status != "accepted" && status != "pending" && status != "rejected") {
         return error("Invalid Status");
     }
     return null;
