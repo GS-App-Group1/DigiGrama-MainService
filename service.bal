@@ -74,7 +74,7 @@ service /main on new http:Listener(9090) {
         if (userRequests is UserRequest[]) {
             UserRequest userRequest = userRequests[0];
             userRequest.status = status;
-            _ = check self.databaseClient->update({"$set": userRequest}, collection, database, {nic: nic, email: email});
+            _ = check self.databaseClient->update({"$set": userRequest}, collection, database, {nic: nic, email: email, status: "pending"});
         }
     }
 
